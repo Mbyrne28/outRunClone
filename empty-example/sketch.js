@@ -1,34 +1,39 @@
 SCREENWIDTH = 800
 SCREENHEIGHT = 600
+ROADHEIGHT = SCREENHEIGHT/2
 
 var car;
 var roads = [];
+var distance = 0;
 
 function setup() {
 
   createCanvas(SCREENWIDTH, SCREENHEIGHT);
   background("lightblue");
 
-  	for (var y=0;y<(SCREENHEIGHT/2)/8;y++){
+  	for (var y=ROADHEIGHT;y<SCREENHEIGHT;y++){
   		//Generate Road segments
-  		roads[y] = new Road(0,(SCREENHEIGHT/2)+y*8,SCREENWIDTH,8);
+  		roads[y-ROADHEIGHT] = new Road(0,y,SCREENWIDTH,1);
   		//Apply Scaling
-  		roads[y].roadScale = (y/SCREENHEIGHT * 10) +0.05
+  		roads[y-ROADHEIGHT].roadScale = 0.8*(ROADHEIGHT-y)/ROADHEIGHT
   		//Show road
-  		roads[y].show()
+  		roads[y-ROADHEIGHT].show()
 	}
 
 }
 
 function draw() {
-  // put drawing code here
-  	console.log("grass")
-  	for (var i=0;i<roads.length;i++){
-  		//Apply 3D Colours
-  		var grass = Math.abs(Math.sin(20*Math.pow((roads.length/i),3)))
-  		if(grass>0.5){
-  			roads[i].grassColour="lightgreen"
-  			roads[i].show()	
-  		}
-	}
+
+	for (var i=0;i<roads.length;i++){
+		//Apply 3D Colours
+    distance += 0.01;
+    var grass = Math.pow(Math.sin(1-distance),2)
+    //console.log(grass, distance)
+		if(grass>0.3){
+			roads[i].grassColour="lightgreen" 
+		}else{
+      roads[i].grassColour="green"
+    }
+    roads[i].show()
+  }
 }
